@@ -1,9 +1,18 @@
+import 'dart:convert';
+
+import 'package:chat_bot/app/services/api/chat_service.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
-
-  final count = 0.obs;
+  final TextEditingController keywordValue = TextEditingController();
+  final RxMap chat_data = {
+    // 1: {
+    //   "id": 1,
+    //   "message": "Halo",
+    // },
+  }.obs;
+  final ScrollController scrollController = ScrollController();
   @override
   void onInit() {
     super.onInit();
@@ -11,10 +20,103 @@ class HomeController extends GetxController {
 
   @override
   void onReady() {
+    // Future.delayed(1.seconds, () {
+    //   chat_data[2] = {
+    //     "id": 1,
+    //     "message": "Selamat Datang di Aplikasi ChatBot ITG",
+    //   };
+    // }).then((_) {
+    //   Future.delayed(1.seconds, () {
+    //     chat_data[3] = {
+    //       "id": 1,
+    //       "message": "Masukkan minimal satu kata ya, untuk hasil lebih maksimal satu kata lebih baik",
+    //     };
+    //   }).then((_) {
+    //     Future.delayed(
+    //       1.seconds,
+    //       () {
+    //         chat_data[4] = {
+    //           "id": 99,
+    //           "message": "atau pilih beberapa saran dari Kami",
+    //         };
+    //         chat_data[5] = {
+    //           "id": 2,
+    //           "message": "PMB",
+    //         };
+    //         chat_data[6] = {
+    //           "id": 2,
+    //           "message": "Pembayaran",
+    //         };
+    //         chat_data[7] = {
+    //           "id": 2,
+    //           "message": "Jadwal Dosen",
+    //         };
+    //         chat_data[8] = {
+    //           "id": 2,
+    //           "message": "Tentang aplikasi",
+    //         };
+    //       },
+    //     );
+    //   });
+    // });
     super.onReady();
   }
 
   @override
   void onClose() {}
-  void increment() => count.value++;
+
+  Future<void> getChat() async {
+    if (keywordValue.text != "") {
+      var chat_data_key = chat_data.length + 1;
+      chat_data[chat_data_key] = {
+        "id": 0,
+        "message": keywordValue.text,
+      };
+      await ChatService().getChat(keywordValue.text).then((value) {
+        if (value.statusCode == 200) {
+          var jsonData = jsonDecode(value.body);
+          if (jsonData["data"].length > 1) {
+            chat_data_key += 1;
+            chat_data[chat_data_key] = {
+              "id": 99,
+              "message": "Mungkin Maksud Anda",
+            };
+            jsonData["data"].forEach((element) {
+              var chat_data_key = chat_data.length + 1;
+              chat_data[chat_data_key] = {
+                "id": 2,
+                "message": element,
+              };
+            });
+          } else if (jsonData["data"].length == 1) {
+            var chat_data_key = chat_data.length + 1;
+            chat_data[chat_data_key] = {
+              "id": 1,
+              "message": jsonData["data"][0],
+            };
+          } else {
+            var chat_data_key = chat_data.length + 1;
+            chat_data[chat_data_key] = {
+              "id": 1,
+              "message": "Maaf sepertinya belum ada jawaban untuk pertanyaan Anda",
+            };
+          }
+        } else {
+          Get.showSnackbar(
+            GetSnackBar(
+              title: "Oops!",
+              message: "terjadi kesalahan di server",
+            ),
+          );
+        }
+      });
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          title: "Oops!",
+          message: "pesan harus dimasukkan",
+        ),
+      );
+    }
+  }
 }
