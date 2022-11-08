@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -39,6 +37,8 @@ class HomeView extends GetView<HomeController> {
                               SizedBox(
                                 height: AppBar().preferredSize.height,
                               ),
+                              for (int i = 0; i < controller.chat_data_0.length; i++)
+                                createBubbleChat(controller.chat_data_0[i + 1]["id"], controller.chat_data_0[i + 1]["message"]),
                               for (int i = 0; i < controller.chat_data.length; i++)
                                 createBubbleChat(controller.chat_data[i + 1]["id"], controller.chat_data[i + 1]["message"])
                             ],

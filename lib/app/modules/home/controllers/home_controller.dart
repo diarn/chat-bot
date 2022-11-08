@@ -12,6 +12,12 @@ class HomeController extends GetxController {
     //   "message": "Halo",
     // },
   }.obs;
+  final RxMap chat_data_0 = {
+    1: {
+      "id": 1,
+      "message": "Halo",
+    },
+  }.obs;
   final ScrollController scrollController = ScrollController();
   @override
   void onInit() {
@@ -20,45 +26,45 @@ class HomeController extends GetxController {
 
   @override
   void onReady() {
-    // Future.delayed(1.seconds, () {
-    //   chat_data[2] = {
-    //     "id": 1,
-    //     "message": "Selamat Datang di Aplikasi ChatBot ITG",
-    //   };
-    // }).then((_) {
-    //   Future.delayed(1.seconds, () {
-    //     chat_data[3] = {
-    //       "id": 1,
-    //       "message": "Masukkan minimal satu kata ya, untuk hasil lebih maksimal satu kata lebih baik",
-    //     };
-    //   }).then((_) {
-    //     Future.delayed(
-    //       1.seconds,
-    //       () {
-    //         chat_data[4] = {
-    //           "id": 99,
-    //           "message": "atau pilih beberapa saran dari Kami",
-    //         };
-    //         chat_data[5] = {
-    //           "id": 2,
-    //           "message": "PMB",
-    //         };
-    //         chat_data[6] = {
-    //           "id": 2,
-    //           "message": "Pembayaran",
-    //         };
-    //         chat_data[7] = {
-    //           "id": 2,
-    //           "message": "Jadwal Dosen",
-    //         };
-    //         chat_data[8] = {
-    //           "id": 2,
-    //           "message": "Tentang aplikasi",
-    //         };
-    //       },
-    //     );
-    //   });
-    // });
+    Future.delayed(1.seconds, () {
+      chat_data_0[2] = {
+        "id": 1,
+        "message": "Selamat Datang di Aplikasi ChatBot ITG",
+      };
+    }).then((_) {
+      Future.delayed(1.seconds, () {
+        chat_data_0[3] = {
+          "id": 1,
+          "message": "Masukkan minimal satu kata ya, untuk hasil lebih maksimal satu kata lebih baik",
+        };
+      }).then((_) {
+        Future.delayed(
+          1.seconds,
+          () {
+            chat_data_0[4] = {
+              "id": 99,
+              "message": "atau pilih beberapa saran dari Kami",
+            };
+            chat_data_0[5] = {
+              "id": 2,
+              "message": "PMB",
+            };
+            chat_data_0[6] = {
+              "id": 2,
+              "message": "Pembayaran",
+            };
+            chat_data_0[7] = {
+              "id": 2,
+              "message": "Jadwal Dosen",
+            };
+            chat_data_0[8] = {
+              "id": 2,
+              "message": "Tentang aplikasi",
+            };
+          },
+        );
+      });
+    });
     super.onReady();
   }
 
