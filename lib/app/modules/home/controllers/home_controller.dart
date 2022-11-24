@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:chat_bot/app/services/api/chat_service.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   final TextEditingController keywordValue = TextEditingController();
+  final RxString nim = "".obs;
   final RxMap chat_data = {
     // 1: {
     //   "id": 1,
@@ -71,6 +73,24 @@ class HomeController extends GetxController {
   @override
   void onClose() {}
 
+  void checkOrder() async {
+    if (keywordValue.text.contains("/nim")) {
+      var nim_order = keywordValue.text.split(".");
+      nim.value = nim_order[1];
+      nim.refresh();
+      log("ada perintah nim");
+      log(nim_order.toString());
+      log(nim.value);
+      var chat_data_key = chat_data.length + 1;
+      chat_data[chat_data_key] = {
+        "id": 1,
+        "message": "NIM ${nim.value} anda telah disimpan",
+      };
+    } else {
+      await getChat();
+    }
+  }
+
   Future<void> getChat() async {
     if (keywordValue.text != "") {
       var chat_data_key = chat_data.length + 1;
@@ -78,7 +98,7 @@ class HomeController extends GetxController {
         "id": 0,
         "message": keywordValue.text,
       };
-      await ChatService().getChat(keywordValue.text).then((value) {
+      await ChatService().getChat(keywordValue.text, nim.value).then((value) {
         if (value.statusCode == 200) {
           var jsonData = jsonDecode(value.body);
           if (jsonData["data"].length > 1) {

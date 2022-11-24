@@ -114,7 +114,8 @@ class HomeView extends GetView<HomeController> {
                         color: Colors.black,
                         onPressed: () {
                           keyword_focus_node.unfocus();
-                          controller.getChat();
+                          controller.checkOrder();
+                          // controller.getChat();
                           Future.delayed(0.75.seconds, () {
                             controller.scrollController.animateTo(
                               controller.scrollController.position.maxScrollExtent,
